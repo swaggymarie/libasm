@@ -4,32 +4,24 @@ global _ft_list_sort
 ;rdi current
 ;r11 next
 _ft_list_sort:
-                ; mov     rdi, 8
-                ; mov     rax, 9
-                ; jmp     _exit_sort
-                mov     r13, 0
-
-                cmp     byte [rdi], 0
+                cmp     rdi, 0
+                je      _exit_error
+                cmp     dword [rdi], 0
+                je      _exit_error
+                cmp     rsi, 0
                 je      _exit_sort
-
-
-                mov     r10, [rdi]
-
+                mov     r10, [rdi] ;save first node in r10
                 mov     rdi, [rdi]
-
                 jmp     _check
 
-_check:     
-                inc     r13
-                cmp     r13, 100
-                je      _exit    
+_check:        
                 mov     r11, [rdi + 8]
                 cmp     r11, 0
                 je      _exit_sort
                 push    rdi
                 push    rsi
-                mov     rdx, rsi
                 mov     rdi, [rdi]
+                mov     rdx, rsi
                 mov     rsi, [r11]
                 call    rdx
                 pop     rsi
@@ -48,9 +40,8 @@ _swap:
                 jmp     _check
 
 _exit_sort:
-                ; mov     rax, r13
                 ret
 
-_exit:
-                mov     rax, 5
+_exit_error:
+                mov rax, 7
                 ret

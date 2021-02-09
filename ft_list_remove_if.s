@@ -4,8 +4,6 @@ extern _free
 _ft_list_remove_if:
                     cmp     rdi, 0 ;check if there is argument
                     je      _exit
-                       
-
 
 _check_first:
                     mov     r10, [rdi]
@@ -22,7 +20,7 @@ _check_first:
                     pop     rdi
 
                     cmp     rax, 0
-                    jne     _loop
+                    jne     _read_loop
                     mov     r8, [rdi] ; adress of adress of first in r8
                     mov     r9, [r8 + 8] ; adress of first->next in r9
                     mov     [rdi], r9   ;adress de l'arg =  adress de first->next
@@ -37,11 +35,10 @@ _check_first:
                     pop     rdi
                     jmp     _check_first
 
-_loop:
-        mov     r11, [r10 + 8] ;first argument saved in r10
+_read_loop:
+        mov     r11, [r10 + 8] ;curr = r10
         cmp     r11, 0
         je      _exit
-
         push    rdi
         push    rsi
         push    rdx
@@ -61,24 +58,23 @@ _loop:
         push    rdi
         push    rsi
         push    rdx
+        mov     r13, [r11 + 8]
+        mov     [r10 + 8], r13
+        mov     rdi, r11
         push    r10
         push    r11
-        mov     rdi, r11
         call    _free
         pop     r11
         pop     r10
         pop     rdx
         pop     rsi
         pop     rdi
-        mov     r11, [r11 + 8]
-        mov     [r10 + 8], r11
-        jmp     _loop
+        jmp     _read_loop
 
 _next:
         mov     r10, r11
-        jmp     _loop
+        jmp     _read_loop
 
 _exit:
-        mov     rax, 7
         ret
         

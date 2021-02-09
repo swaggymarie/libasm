@@ -2,8 +2,11 @@
 #include <stdlib.h>
 
 //rdi rsi rdx
-//errno
-void ft_check_strlen(void)
+//supprimer retour fonction
+// tester avec void * partout
+// refaire tests propres
+
+void check_strlen(void)
 {
     printf("\n|%zu|\n", strlen("Hello"));
     printf("salut\n");
@@ -61,6 +64,7 @@ void check_strcpy()
     printf("\n%s\n", ft_strcpy(str1, str2));
     printf("re === %s\n", str1);
 }
+
 int		strcpy_test(char *src)
 {
 	char	dest1[57];
@@ -102,6 +106,22 @@ int		strcpy_test(char *src)
 	printf("return : |%s|\n", ft_strcpy(str6, str7));
 	return (1);
 }
+
+void	delete_list(t_list **list)
+{
+		t_list *current;
+		t_list *next;
+ 
+		current = *list;
+    	while (current != NULL)
+    	{
+        	next = current->next;
+        	free(current);
+        	current = next;
+    	}
+		*list = NULL;
+}
+
 void	list_add_back(t_list **alst, t_list *new)
 {
 	t_list	*tmp;
@@ -157,6 +177,7 @@ int		list_size_test(int lst_num)
 		printf("" GREEN "[OK] " RESET "");
 	else
 		printf("" RED "[KO] " RESET "");
+	delete_list(&list);
 	return (1);
 }
 
@@ -172,10 +193,26 @@ void	print_list(t_list *list)
 	}
 }
 
+void	print_string_list(t_list *list)
+{
+	t_list	*tmp;
+
+	tmp = list;
+	while (tmp)
+	{
+		printf("%s\n", tmp->data);
+		tmp = tmp->next;
+	}
+}
+int get_int(void* value){
+    return *((int*) value);
+}
+
 int cmp_int(void *a, void *b)
 {
-	return *(int*)a - *(int*)b;
+	return (get_int(a) - get_int(b));
 }
+
 
 int     list_sort_test()
 {
@@ -184,17 +221,17 @@ int     list_sort_test()
 	list = NULL;
 	printf("LIST SORT\n");
 
-    list_add_back(&list, list_new((void *)98));
-    list_add_back(&list, list_new((void *)12));
-    list_add_back(&list, list_new((void *)12));
-	list_add_back(&list, list_new((void *)45));
-    list_add_back(&list, list_new((void *)1));
-    list_add_back(&list, list_new((void *)-1));
-	list_add_back(&list, list_new((void *)232));
-    list_add_back(&list, list_new((void *)34));
-    list_add_back(&list, list_new((void *)23));
+    list_add_back(&list, list_new((void *)6));
+    list_add_back(&list, list_new((void *)4));
+    //list_add_back(&list, list_new((void *)12));
+	//list_add_back(&list, list_new((void *)45));
+    //list_add_back(&list, list_new((void *)1));
+    //list_add_back(&list, list_new((void *)-1));
+	//list_add_back(&list, list_new((void *)232));
+    //list_add_back(&list, list_new((void *)34));
+    //list_add_back(&list, list_new((void *)23));
 	//45 1 -1 232 34 23
-    //list_add_back(&list, list_new(strdup("1")));
+    //list_add_back(&list, list_new(strdup("6")));
     //list_add_back(&list, list_new(strdup("4")));
     //list_add_back(&list, list_new(strdup("6")));
     //list_add_back(&list, list_new(strdup("3")));
@@ -204,6 +241,8 @@ int     list_sort_test()
     printf("_________________________\n");
     printf("%d\n", ft_list_sort(&list, cmp_int));
     print_list(list);
+	//print_string_list(list);
+	delete_list(&list);
     return(1);
 }
 
@@ -212,34 +251,44 @@ int     list_push_front_test()
     t_list	*list;
 
 	list = NULL;
-    //list_add_back(&list, list_new(strdup("1")));
-    //list_add_back(&list, list_new(strdup("5")));
-    //list_add_back(&list, list_new(strdup("6")));
-    list_add_back(&list, list_new(strdup("8")));
+	char *str;
+
+	str = strdup("1");
+    list_add_back(&list, list_new("1"));
+    list_add_back(&list, list_new("5"));
+    list_add_back(&list, list_new("6"));
+    list_add_back(&list, list_new("8"));
     printf("PUSH FRONT TEST\n");
     print_list(list);
     printf("___________________\n");
-    printf("%d\n",ft_list_push_front(&list, strdup("1")));
+    printf("%d\n",ft_list_push_front(&list, str));
     //ft_list_push_front(&list, (void *)8);
     print_list(list);
+	delete_list(&list);
+	free(str);
     return(1);
 }
 
 int     list_remove_if_test()
 {
     t_list	*list;
+	char 	*str;
 
 	list = NULL;
-    list_add_back(&list, list_new(strdup("5")));
-    list_add_back(&list, list_new(strdup("1")));
-    list_add_back(&list, list_new(strdup("6")));
-    list_add_back(&list, list_new(strdup("8")));
-    list_add_back(&list, list_new(strdup("7")));
+	str = strdup("7");
+    list_add_back(&list, list_new("5"));
+    list_add_back(&list, list_new("1"));
+    list_add_back(&list, list_new("6"));
+    list_add_back(&list, list_new("8"));
+    list_add_back(&list, list_new("7"));
     printf("\nREMOVE IF TEST\n");
-    print_list(list);
+    print_string_list(list);
     printf("___________________\n");
-    printf("%d\n", ft_list_remove_if(&list, strdup("7"), &strcmp));
-    print_list(list);
+    printf("%d\n", ft_list_remove_if(&list, str, &strcmp));
+    print_string_list(list);
+	delete_list(&list);
+	free(str);
+	str = NULL;
     return(1);
 }
 
@@ -250,7 +299,7 @@ void    atoi_base_test()
 
 int main(void)
 {
-    ft_check_strlen();
+    check_strlen();
     check_strcmp("HEllo", "hello");
     strdup_test("");
     strdup_test("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tellus metus, finibus quis sagittis quis, volutpat a justo. Nunc et pellentesque quam. Fusce aliquam aliquam libero, sed pulvinar nullam.");

@@ -1,4 +1,4 @@
-#include "libasm.h"
+#include <libasm.h>
 #include <stdlib.h>
 
 //rdi rsi rdx
@@ -32,25 +32,6 @@ void check_strdup()
     printf("FT STRDUP\n");
 	printf("return : |%s|\n", ft_strdup(dup));
     printf("dup terminé\n");
-}
-
-void    strdup_test(char *str)
-{
-    char	*str1;
-	char	*str2;
-
-	str1 = ft_strdup(str);
-    printf("%s\n", str1);
-	str2 = strdup(str);
-    printf("---> %s\n", str2);
-	if (!strcmp(str1, str2))
-		printf("" GREEN "[OK] " RESET "");
-	else
-		printf("" RED "[KO] " RESET "");
-
-    printf("..........................\n");
-	free(str1);
-	free(str2);
 }
 
 void	delete_list(t_list **list)
@@ -120,6 +101,7 @@ void	print_string_list(t_list *list)
 		tmp = tmp->next;
 	}
 }
+
 int get_int(void* value){
 	printf("salut get int\n");
 	int i;
@@ -135,95 +117,12 @@ int cmp_int(void *a, void *b)
 	return (get_int(a) - get_int(b));
 }
 
-
-int     list_sort_test()
-{
-    t_list	*list;
-
-	list = NULL;
-	printf("LIST SORT\n");
-
-	void *v;
-
-	v = malloc(sizeof(void *));
-	v = (void *)6;
-    list_add_back(&list, list_new(v));
-	v = (void *)4;
-    list_add_back(&list, list_new(v));
-    //list_add_back(&list, list_new((void *)12));
-	//list_add_back(&list, list_new((void *)45));
-    //list_add_back(&list, list_new((void *)1));
-    //list_add_back(&list, list_new((void *)-1));
-	//list_add_back(&list, list_new((void *)232));
-    //list_add_back(&list, list_new((void *)34));
-    //list_add_back(&list, list_new((void *)23));
-	//45 1 -1 232 34 23
-    //list_add_back(&list, list_new(strdup("6")));
-    //list_add_back(&list, list_new(strdup("4")));
-    //list_add_back(&list, list_new(strdup("6")));
-    //list_add_back(&list, list_new(strdup("3")));
-    //list_add_back(&list, list_new(strdup("8")));
-    //list_add_back(&list, list_new(strdup("3")));
-    print_list(list);
-    printf("_________________________\n");
-    printf("%d\n", ft_list_sort(&list, cmp_int));
-    print_list(list);
-	//print_string_list(list);
-	delete_list(&list);
-    return(1);
-}
-
-int     list_push_front_test()
-{
-    t_list	*list;
-
-	list = NULL;
-	char *str;
-
-	str = strdup("1");
-    list_add_back(&list, list_new("1"));
-    list_add_back(&list, list_new("5"));
-    list_add_back(&list, list_new("6"));
-    list_add_back(&list, list_new("8"));
-    printf("PUSH FRONT TEST\n");
-    print_list(list);
-    printf("___________________\n");
-    printf("%d\n",ft_list_push_front(&list, str));
-    //ft_list_push_front(&list, (void *)8);
-    print_list(list);
-	delete_list(&list);
-	free(str);
-    return(1);
-}
-
-int     list_remove_if_test()
-{
-    t_list	*list;
-	char 	*str;
-
-	list = NULL;
-	str = strdup("7");
-    list_add_back(&list, list_new("5"));
-    list_add_back(&list, list_new("1"));
-    list_add_back(&list, list_new("6"));
-    list_add_back(&list, list_new("8"));
-    list_add_back(&list, list_new("7"));
-    printf("\nREMOVE IF TEST\n");
-    print_string_list(list);
-    printf("___________________\n");
-    printf("%d\n", ft_list_remove_if(&list, str, &strcmp));
-    print_string_list(list);
-	delete_list(&list);
-	free(str);
-	str = NULL;
-    return(1);
-}
-
 void    atoi_base_test(char *nb, char* base, int expected)
 {
 	int ret;
 
 	ret = ft_atoi_base(nb, base);
+	printf("ret = %d\n", ret); 
 	if (ret == expected)
 		printf("" GREEN "[OK] " RESET "");
 	else
@@ -237,13 +136,13 @@ void 	list_push_front_test()
 
 	list = NULL;
 	ft_list_push_front(&list, strdup("coucou"));
-	if (strcmp(list->data, "coucou" == 0))
+	if (strcmp(list->data, "coucou") == 0)
 		printf("" GREEN "[OK] " RESET "");
 	else
 		printf("" RED "[KO] " RESET "");
 
 	ft_list_push_front(&list, (void *)6);
-	if (cmp(list->data, (void *)6 == 0))
+	if (strcmp((char *)list->data, "6") == 0)
 		printf("" GREEN "[OK] " RESET "");
 	else
 		printf("" RED "[KO] " RESET "");
@@ -253,7 +152,6 @@ void 	list_push_front_test()
 void 	list_remove_if_test()
 {
 	t_list	*list;
-	int		len;
 
 
 	list = NULL;
@@ -326,13 +224,6 @@ void	strmcp_test(int ret, int ref)
 
 void	strcpy_test(char *ret, char *ref)
 {
-	char	dest1[57];
-	char	dest2[57];
-
-	bzero(dest1, 57);
-	bzero(dest2, 57);
-	ft_strcpy(dest1, src);
-	strcpy(dest2, src);
 	if (strcmp(ref, ret) == 0)
 		printf("" GREEN "[OK] " RESET "");
 	else
@@ -379,7 +270,7 @@ int main(void)
 	atoi_base_test("0123456789", "2147483647", 2147483647);
 	atoi_base_test("0123456789", "2147483k648", 2147483);
 
-	printf("___________________________\n");
+	printf("\n\n___________________________\n");
 	printf(".........push_front........\n");
 	printf("___________________________\n");
 
@@ -434,12 +325,12 @@ int main(void)
 	printf("............strlen.........\n");
 	printf("___________________________\n");
     strlen_test(ft_strlen("coucou"), strlen("coucou"));
-    strlen_test(ft_strlen(NULL), strlen(NULL));
+    //strlen_test(ft_strlen(NULL), strlen(NULL));
 
 	printf("___________________________\n");
 	printf("............write..........\n");
 	printf("___________________________\n");
-	write_test("");
+	write_test();
 
 	printf("___________________________\n");
 	printf("............read...........\n");

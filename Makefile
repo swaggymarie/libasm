@@ -50,7 +50,7 @@ $(NAME) : $(OBJ)
 	$(NASM) $(NASMFLAGS) $< -o $@
 	@echo "\033[0m"
 
-test : fclean bonus
+test : fclean $(NAME) $(OBJ_BONUS)
 	$(CC) $(CFLAGS) main.c $(NAME_LIB) && ./a.out
 
 bonus : $(OBJ_BONUS)

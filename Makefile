@@ -28,7 +28,7 @@ SRC_BONUS =	ft_atoi_base.s \
 SRC_DIR = ./srcs
 
 CC = clang
-CFLAGS = -v -g -I $(INCLUDE) -L. -Wall -Wextra -Werror
+CFLAGS = -v -I $(INCLUDE) -L. -Wall -Wextra -Werror
 
 NASM = nasm
 NASMFLAGS = -f macho64 -I$(INCLUDE)
@@ -71,6 +71,6 @@ clean :
 
 fclean : clean
 	rm -f $(NAME)
-	rm -f ./a.out
+	rm -f $(BIN)
 
 re : fclean all

@@ -74,7 +74,7 @@ t_list	*list_new(void *data)
 		return (NULL);
 	lst->data = data;
 	lst->next = NULL;
-	printf("cc\n");
+	//printf("cc\n");
 	return (lst);
 }
 
@@ -103,17 +103,16 @@ void	print_string_list(t_list *list)
 }
 
 int get_int(void* value){
-	printf("salut get int\n");
 	int i;
 
 	i = *((int *) value);
-	printf("popopo\n");
     return (i);
 }
 
 int cmp_int(void *a, void *b)
 {
-	printf("salut cmp int\n");
+	//printf("a = %d\n", get_int(a));
+	//printf("b = %d\n", get_int(b));
 	return (get_int(a) - get_int(b));
 }
 
@@ -122,7 +121,6 @@ void    atoi_base_test(char *nb, char* base, int expected)
 	int ret;
 
 	ret = ft_atoi_base(nb, base);
-	printf("ret = %d\n", ret); 
 	if (ret == expected)
 		printf("" GREEN "[OK] " RESET "");
 	else
@@ -136,13 +134,12 @@ void 	list_push_front_test()
 
 	list = NULL;
 	ft_list_push_front(&list, strdup("coucou"));
-	if (strcmp(list->data, "coucou") == 0)
+	if (cmp_int(list->data, "coucou") == 0)
 		printf("" GREEN "[OK] " RESET "");
 	else
 		printf("" RED "[KO] " RESET "");
-
-	ft_list_push_front(&list, (void *)6);
-	if (strcmp((char *)list->data, "6") == 0)
+	ft_list_push_front(&list, "6");
+	if (cmp_int(list->data, "6") == 0)
 		printf("" GREEN "[OK] " RESET "");
 	else
 		printf("" RED "[KO] " RESET "");
@@ -156,7 +153,6 @@ void 	list_remove_if_test()
 
 	list = NULL;
 	ft_list_remove_if(&list, "cc", strcmp);
-
 	list_add_back(&list, list_new("cc"));
 	ft_list_remove_if(&list, "cc", strcmp);
 	if (list == NULL)
@@ -183,10 +179,11 @@ void	list_sort_test()
 	list_add_back(&list, list_new(strdup("6")));
     list_add_back(&list, list_new(strdup("4")));
 
+	ft_list_sort(&list, strcmp);
 	tmp = list;
-	while(tmp)
+	while(tmp->next)
 	{
-		if (strcmp(tmp->data, tmp->next->data) <= 0)
+		if (cmp_int(tmp->data, tmp->next->data) <= 0)
 			printf("" GREEN "[OK] " RESET "");
 		else
 			printf("" RED "[KO] " RESET "");
@@ -198,10 +195,16 @@ void	list_sort_test()
 void	list_size_test(int len)
 {
 	t_list	*list;
+	int		i;
 
 	list = NULL;
-	while (len--)
-		list_add_back(&list, list_new(&len));
+	i = len;
+	while (i > 0)
+	{
+		list_add_back(&list, list_new((void *)(uintptr_t)len));
+		i--;
+	}
+	len = len < 0 ? 0 : len; 
 	if (len == ft_list_size(list))
 		printf("" GREEN "[OK] " RESET "");
 	else
@@ -222,12 +225,17 @@ void	strmcp_test(int ret, int ref)
 		printf("" RED "[KO] " RESET "");
 }
 
-void	strcpy_test(char *ret, char *ref)
+void	strcpy_test(char *ref)
 {
-	if (strcmp(ref, ret) == 0)
+	char a[500];
+
+	bzero(a, 500);
+	ft_strcpy(a, ref);
+	if (strcmp(a, ref) == 0)
 		printf("" GREEN "[OK] " RESET "");
 	else
 		printf("" RED "[KO] " RESET "");
+	
 }
 
 void	strdup_test(char *str)
@@ -264,11 +272,11 @@ int main(void)
 	printf("..........atoi_base........\n");
 	printf("___________________________\n");
 
-	atoi_base_test("0123456789", "-3", -3);
-	atoi_base_test("0123456789", "", 0);
-	atoi_base_test("0123456789", "-2147483648", -2147483648);
-	atoi_base_test("0123456789", "2147483647", 2147483647);
-	atoi_base_test("0123456789", "2147483k648", 2147483);
+	atoi_base_test("-3", "0123456789", -3);
+	atoi_base_test("", "0123456789", 0);
+	atoi_base_test("-2147483648", "0123456789", -2147483648);
+	atoi_base_test("2147483647", "0123456789", 2147483647);
+	atoi_base_test("2147483k648", "0123456789", 2147483);
 
 	printf("\n\n___________________________\n");
 	printf(".........push_front........\n");
@@ -276,63 +284,95 @@ int main(void)
 
 	list_push_front_test();
 
-	printf("___________________________\n");
+	printf("\n\n___________________________\n");
 	printf("..........remove_if........\n");
 	printf("___________________________\n");
 
 	list_remove_if_test();
 
-	printf("___________________________\n");
+	printf("\n\n___________________________\n");
 	printf("............sort...........\n");
 	printf("___________________________\n");
 
 	list_sort_test();
 
-	printf("___________________________\n");
+	//tester avec max int, 
+	printf("\n\n___________________________\n");
 	printf("..........list_size........\n");
 	printf("___________________________\n");
 	list_size_test(0);
-	list_size_test(8);
+	list_size_test(-8);
 	list_size_test(1);
-	list_size_test(666666666);
+	list_size_test(66);
 
 
-	printf("___________________________\n");
+	//changer int en -1, 0, 1 
+	printf("\n\n___________________________\n");
 	printf("............strcmp.........\n");
 	printf("___________________________\n");
     strmcp_test(ft_strcmp("cc", ""), strcmp("cc", ""));
-    strmcp_test(ft_strcmp("", ""), strcmp("", ""));
+    strmcp_test(ft_strcmp("non", "papa"), strcmp("non", "papa"));
     strmcp_test(ft_strcmp("blabalabla&", "blabalabla&"), strcmp("blabalabla&", "blabalabla&"));
 
 
-	printf("___________________________\n");
+	printf("\n\n___________________________\n");
 	printf("............strcpy.........\n");
 	printf("___________________________\n");
-    strcpy_test(ft_strcpy("coco", "barbapapa"), "barbapapa");
-	strcpy_test(ft_strcpy("coco", ""), "");
-    strcpy_test(ft_strcpy("coco", "\0\0"), "\0\0");
+    strcpy_test("barbapapa");
+	strcpy_test("");
+    strcpy_test("\0\0");
+    strcpy_test("Lorem ipsum dolor sit amet, consectetur adipiscing\
+elit. Sed in malesuada purus. Etiam a scelerisque massa. Ut non euismod elit. Aliquam\
+bibendum dolor mi, id fringilla tellus pulvinar eu. Fusce vel fermentum sem. Cras\
+volutpat, eros eget rhoncus rhoncus, diam augue egestas dolor, vitae rutrum nisi\
+felis sed purus. Mauris magna ex, mollis non suscipit eu, lacinia ac turpis. Phasellus\
+ac tortor et lectus fermentum lobortis eu at mauris. Vestibulum sit amet posuere\
+tortor, sit amet consequat amet.");
+	
 
 	
 
-	printf("___________________________\n");
+	printf("\n\n___________________________\n");
 	printf("...........strdup..........\n");
 	printf("___________________________\n");
 	strdup_test("Que neni");
 	strdup_test("666666666666666666666666666666666666666666666666666666666666666666");
 	strdup_test("");
+	strdup_test("Lorem ipsum dolor sit amet, consectetur adipiscing\
+elit. Sed in malesuada purus. Etiam a scelerisque massa. Ut non euismod elit. Aliquam\
+bibendum dolor mi, id fringilla tellus pulvinar eu. Fusce vel fermentum sem. Cras\
+volutpat, eros eget rhoncus rhoncus, diam augue egestas dolor, vitae rutrum nisi\
+felis sed purus. Mauris magna ex, mollis non suscipit eu, lacinia ac turpis. Phasellus\
+ac tortor et lectus fermentum lobortis eu at mauris. Vestibulum sit amet posuere\
+tortor, sit amet consequat amet.");
 
-	printf("___________________________\n");
+//change large string to one
+	printf("\n\n___________________________\n");
 	printf("............strlen.........\n");
 	printf("___________________________\n");
     strlen_test(ft_strlen("coucou"), strlen("coucou"));
-    //strlen_test(ft_strlen(NULL), strlen(NULL));
+	strlen_test(ft_strlen("Lorem ipsum dolor sit amet, consectetur adipiscing\
+elit. Sed in malesuada purus. Etiam a scelerisque massa. Ut non euismod elit. Aliquam\
+bibendum dolor mi, id fringilla tellus pulvinar eu. Fusce vel fermentum sem. Cras\
+volutpat, eros eget rhoncus rhoncus, diam augue egestas dolor, vitae rutrum nisi\
+felis sed purus. Mauris magna ex, mollis non suscipit eu, lacinia ac turpis. Phasellus\
+ac tortor et lectus fermentum lobortis eu at mauris. Vestibulum sit amet posuere\
+tortor, sit amet consequat amet."), strlen("Lorem ipsum dolor sit amet, consectetur adipiscing\
+elit. Sed in malesuada purus. Etiam a scelerisque massa. Ut non euismod elit. Aliquam\
+bibendum dolor mi, id fringilla tellus pulvinar eu. Fusce vel fermentum sem. Cras\
+volutpat, eros eget rhoncus rhoncus, diam augue egestas dolor, vitae rutrum nisi\
+felis sed purus. Mauris magna ex, mollis non suscipit eu, lacinia ac turpis. Phasellus\
+ac tortor et lectus fermentum lobortis eu at mauris. Vestibulum sit amet posuere\
+tortor, sit amet consequat amet."));
 
-	printf("___________________________\n");
+    strlen_test(ft_strlen(""), strlen(""));
+
+	printf("\n\n___________________________\n");
 	printf("............write..........\n");
 	printf("___________________________\n");
 	write_test();
 
-	printf("___________________________\n");
+	printf("\n\n___________________________\n");
 	printf("............read...........\n");
 	printf("___________________________\n");
     read_test();

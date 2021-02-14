@@ -71,6 +71,6 @@ clean :
 
 fclean : clean
 	rm -f $(NAME)
-	rm -f ./a.out
+	rm -f $(BIN)
 
 re : fclean all

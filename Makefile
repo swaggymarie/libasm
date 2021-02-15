@@ -6,7 +6,7 @@
 #    By: mgavillo <mgavillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/25 17:09:00 by mgavillo          #+#    #+#              #
-#    Updated: 2021/02/03 22:45:23 by mgavillo         ###   ########.fr        #
+#    Updated: 2021/02/15 16:01:13 by mgavillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRC_BONUS =	ft_atoi_base.s \
 SRC_DIR = ./srcs
 
 CC = clang
-CFLAGS = -v -g -I $(INCLUDE) -L. -Wall -Wextra -Werror
+CFLAGS = -v -I $(INCLUDE) -L. -Wall -Wextra -Werror
 
 NASM = nasm
 NASMFLAGS = -f elf64 -I$(INCLUDE)
@@ -41,6 +41,7 @@ OBJ = $(patsubst %.s, ${OBJ_DIR}/%.o, ${SRC})
 OBJ_BONUS = $(OBJ) $(patsubst %.s, ${OBJ_DIR}/%.o, ${SRC_BONUS})
 
 BIN = test
+TEST_FILE = test.txt
 #vpath %.s ./src
 #vpath %.h ./include
 
@@ -57,9 +58,13 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.s $(HEADER)
 	$(NASM) $(NASMFLAGS) -s $< -o $@
 	@echo "\033[0m"
 
-test : main.c $(NAME) $(OBJ_BONUS)
-	$(CC) $< $(CFLAGS) -o $(BIN) -lasm
+test : fclean bonus main.c $(NAME)
+	touch $(TEST_FILE)
+	$(CC) main.c $(CFLAGS) -o $(BIN) -lasm
+	@echo "salut"
 	./$(BIN)
+	@if [./$(BIN) ]; then rm -rf $(TEST_FILE); fi
+
 
 bonus : $(OBJ_BONUS)
 	ar rcs $(NAME) $^

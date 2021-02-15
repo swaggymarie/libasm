@@ -212,10 +212,6 @@ void	list_size_test(int len)
 	delete_list(&list);
 }
 
-void	read_test()
-{
-
-}
 
 void	strmcp_test(int ret, int ref)
 {
@@ -263,6 +259,24 @@ void	strlen_test(int ret, int ref)
 
 void	write_test()
 {
+		char buf[100];
+		int	fd;
+		int ret;
+
+		fd = open("test.txt", O_RDWR);
+		ret = ft_write(fd, NULL, 6);
+		printf("ret = %d\n", ret);
+		close(fd);
+		fd = open("test.txt", O_RDWR);
+		ft_read(fd, buf, 6);
+		printf("read = %s\n", buf);
+		close(fd);
+}
+
+void	read_test()
+{
+
+
 
 }
 
@@ -370,12 +384,14 @@ tortor, sit amet consequat amet."));
 	printf("\n\n___________________________\n");
 	printf("............write..........\n");
 	printf("___________________________\n");
+
 	write_test();
 
 	printf("\n\n___________________________\n");
 	printf("............read...........\n");
 	printf("___________________________\n");
     read_test();
+	
 	printf("\n\n");
-    return(1);
+	return 1;
 }

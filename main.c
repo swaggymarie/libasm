@@ -1,5 +1,6 @@
 #include <libasm.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 //rdi rsi rdx
 //supprimer retour fonction
@@ -74,7 +75,6 @@ t_list	*list_new(void *data)
 		return (NULL);
 	lst->data = data;
 	lst->next = NULL;
-	//printf("cc\n");
 	return (lst);
 }
 
@@ -175,15 +175,21 @@ void	list_sort_test()
 	t_list	*tmp;
 
 	list = NULL;
-	
-	list_add_back(&list, list_new(strdup("6")));
-    list_add_back(&list, list_new(strdup("4")));
 
-	ft_list_sort(&list, strcmp);
+	list_add_back(&list, list_new("2"));
+	list_add_back(&list, list_new("4"));
+	list_add_back(&list, list_new("5"));
+	list_add_back(&list, list_new("7"));
+	list_add_back(&list, list_new("9"));
+
+	print_string_list(list);
+	printf("%d", ft_list_sort(&list, strcmp));
+	printf("coucou");
+	print_string_list(list);
 	tmp = list;
 	while(tmp->next)
 	{
-		if (cmp_int(tmp->data, tmp->next->data) <= 0)
+		if (strcmp(tmp->data, tmp->next->data) <= 0)
 			printf("" GREEN "[OK] " RESET "");
 		else
 			printf("" RED "[KO] " RESET "");

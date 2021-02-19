@@ -64,6 +64,7 @@ test : fclean bonus main.c $(NAME)
 	touch $(TEST_FILE)
 	$(CC) main.c $(CFLAGS) -o $(BIN) -lasm
 	./$(BIN)
+	rm $(TEST_FILE)
 
 bonus : $(OBJ_BONUS)
 	ar rcs $(NAME) $^

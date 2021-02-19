@@ -176,16 +176,17 @@ void	list_sort_test()
 
 	list = NULL;
 
-	list_add_back(&list, list_new("2"));
-	list_add_back(&list, list_new("4"));
-	list_add_back(&list, list_new("5"));
-	list_add_back(&list, list_new("7"));
-	list_add_back(&list, list_new("9"));
+	list_add_back(&list, list_new(strdup("2")));
+	list_add_back(&list, list_new(strdup("8")));
+	list_add_back(&list, list_new(strdup("5")));
+	list_add_back(&list, list_new(strdup("coucou")));
+	list_add_back(&list, list_new(strdup("9")));
+	list_add_back(&list, list_new(strdup("blabla")));
+	list_add_back(&list, list_new(strdup("lol")));
 
-	print_string_list(list);
-	printf("%d", ft_list_sort(&list, strcmp));
-	printf("coucou");
-	print_string_list(list);
+	//print_string_list(list);
+	ft_list_sort(&list, strcmp);
+	//print_string_list(list);
 	tmp = list;
 	while(tmp->next)
 	{

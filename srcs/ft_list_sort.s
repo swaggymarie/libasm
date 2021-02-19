@@ -4,41 +4,37 @@ global ft_list_sort
 ;rdi current
 ;r11 next
 ft_list_sort:
-                ;cmp     rdi, 0
-                ;je      exit_sort
-                ;cmp     rsi, 0
-                ;je      exit_sort
+		cmp	rdi, 0
+		je	exit_sort
+		cmp	rsi, 0
+		je	exit_sort
+		mov	r10, [rdi]
                	mov     rdi, [rdi]
-                mov     r10, rdi ;save first node in r10
-		mov	r13, 0
-                mov     rdx, rsi
                 jmp     check
 
 test:
 		inc	r13
 		mov 	rdi, [rdi + 8]
 		cmp	rdi, 0
-		je	exit
+		je	exit_sort
 		jmp	test
 
-check: 
-		;inc 	r13
-		;cmp	r13, 1
-		;je	exit
+check:
                 mov     r11, [rdi + 8]
                 cmp     r11, 0
-                je      exit
+                je      exit_sort
                 push	rdi
-		push	rdx
+		push	rsi
 		push	r11
+		mov	r13, rsi
                 mov     rdi, [rdi]
                 mov     rsi, [r11]
-                call    rdx
+                call    r13
 		pop	r11
-		pop	rdx
+		pop	rsi
                 pop     rdi
-                cmp     rax, 0
-                jg      swap
+                cmp     eax, 0
+		jg	swap
                 mov     rdi, r11
                 jmp     check
 
@@ -51,8 +47,4 @@ swap:
                 jmp     check
 
 exit_sort:
-                ret
-
-exit:
-		mov rax, r13
 		ret

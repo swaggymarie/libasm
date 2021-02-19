@@ -270,6 +270,25 @@ void	strlen_test(int ret, int ref)
 
 void	write_test()
 {
+	char buf[100];
+	int	fd;
+	int ret;
+
+	fd = open("./test.txt", O_WRONLY);
+	printf("%d", fd);
+	ret = ft_write(fd, "slauuuuut", 9);
+	printf("ret = %d\n", ret);
+	close(fd);
+
+	fd = open("test.txt", O_RDONLY);
+	ft_read(fd, buf, 6);
+	printf("read = %s\n", buf);
+	close(fd);
+
+	fd = open("test.txt", O_RDONLY);
+	read(fd, buf, 6);
+	printf("read = %s\n", buf);
+	close(fd);
 
 }
 
@@ -384,5 +403,5 @@ tortor, sit amet consequat amet."));
 	printf("___________________________\n");
     read_test();
 	printf("\n\n");
-    return(1);
+    return(0);
 }

@@ -28,7 +28,7 @@ SRC_BONUS =	ft_atoi_base.s \
 SRC_DIR = ./srcs
 
 CC = clang
-CFLAGS = -v -I $(INCLUDE) -L. -Wall -Wextra -Werror
+CFLAGS = -I $(INCLUDE) -L. -Wall -Wextra -Werror
 
 NASM = nasm
 NASMFLAGS = -f elf64 -I$(INCLUDE)
@@ -44,6 +44,8 @@ BIN = test
 TEST_FILE = test.txt
 #vpath %.s ./src
 #vpath %.h ./include
+
+.PHONY : all test bonus clean fclean re
 
 all : $(NAME)
 
@@ -61,10 +63,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.s $(HEADER)
 test : fclean bonus main.c $(NAME)
 	touch $(TEST_FILE)
 	$(CC) main.c $(CFLAGS) -o $(BIN) -lasm
-	@echo "salut"
 	./$(BIN)
-	@if [./$(BIN) ]; then rm -rf $(TEST_FILE); fi
-
 
 bonus : $(OBJ_BONUS)
 	ar rcs $(NAME) $^

@@ -2,9 +2,11 @@ global ft_strdup
 extern malloc
 extern ft_strlen
 extern ft_strcpy
-;ajouter error exit
+
 ft_strdup:
             call    ft_strlen
+            cmp     rax, -1
+            je      _exit
             inc     rax
             push    rdi
             mov     rdi, rax
@@ -17,4 +19,4 @@ ft_strdup:
             ret
 
 _exit:
-        ret
+            ret

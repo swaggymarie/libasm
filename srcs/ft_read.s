@@ -2,15 +2,14 @@ global ft_read
 extern __errno_location
 
 ft_read:
-	cmp	rdx, 0
-	jle	end
-	mov	rax, 0
-	syscall
-	jnc	end
-	push	rax
-	call    __errno_location
-	pop     qword [rax]
-	mov     rax, -1
+		mov		rax, 0
+		syscall
+		jnl		end
+	    neg		rax
+		mov		rdi,rax
+	    call    __errno_location
+	    mov		[rax], rdi
+		mov     rax, -1
 
 end:
-	ret
+		ret

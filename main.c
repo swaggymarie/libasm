@@ -1,39 +1,11 @@
 #include <libasm.h>
 #include <stdlib.h>
 #include <stdint.h>
-
+#include <errno.h>
 //rdi rsi rdx
 //supprimer retour fonction
 // tester avec void * partout
 // refaire tests propres
-
-void check_strlen(void)
-{
-    printf("\n|%zu|\n", strlen("Hello"));
-    printf("salut\n");
-    printf("\n|%zu|\n", ft_strlen("Hello"));
-    printf("%%%%%%%%%%%%\n");
-    printf("\n|%zu|\n", ft_write(3 , NULL, 3));
-    //printf("\nreturn : [%zd]\n", ft_write(1, "Hello World !", 13));
-}
-
-void check_strcmp(char *s1, char *s2)
-{
-    
-    if (strcmp(s1, s2) == ft_strcmp(s1, s2))
-		printf("" GREEN "[OK] " RESET "");
-	else
-		printf("" RED "[KO] " RESET "");
-}
-
-void check_strdup()
-{
-	char	dup[] = "New Malloc";
-	//char	dup1[] = "little";
-    printf("FT STRDUP\n");
-	printf("return : |%s|\n", ft_strdup(dup));
-    printf("dup terminé\n");
-}
 
 void	delete_list(t_list **list)
 {
@@ -219,14 +191,15 @@ void	list_size_test(int len)
 	delete_list(&list);
 }
 
-void	read_test()
-{
 
-}
-
-void	strmcp_test(int ret, int ref)
+void	strmcp_test(char *str1, char * str2)
 {
-	if (ret == ref)
+	int ret;
+	int ref;
+
+	ref = strcmp(str1, str2);
+	ret = ft_strcmp(str1, str2);
+	if ((ret < 0 && ref < 0) || (ret > 0 && ref > 0) || (ret == 0 && ref == 0))
 		printf("" GREEN "[OK] " RESET "");
 	else
 		printf("" RED "[KO] " RESET "");
@@ -252,44 +225,58 @@ void	strdup_test(char *str)
 
 	str1 = ft_strdup(str);
 	str2 = strdup(str);
-	if (!strcmp(str1, str2))
+	if (!ft_strcmp(str1, str2))
 		printf("" GREEN "[OK] " RESET "");
 	else
 		printf("" RED "[KO] " RESET "");
-	free(str1);
-	free(str2);
+	if(str1)
+		free(str1);
+	if(str2)
+		free(str2);
 }
 
-void	strlen_test(int ret, int ref)
+void	strlen_test(char * str)
 {
+	int ret;
+	int ref;
+	ref = strlen(str);
+	ret = ft_strlen(str);
 	if (ret == ref)
 		printf("" GREEN "[OK] " RESET "");
 	else
 		printf("" RED "[KO] " RESET "");
 }
 
-void	write_test()
+void	WriteRead_test(char *str)
 {
-	char buf[100];
+	char buf1[100];
+	char buf2[100];
 	int	fd;
 	int ret;
+	int len;
 
+	bzero(buf1, '0');
+	bzero(buf2, '0');
+	len = ft_strlen(str);
 	fd = open("./test.txt", O_WRONLY);
-	printf("%d", fd);
-	ret = ft_write(fd, "slauuuuut", 9);
-	printf("ret = %d\n", ret);
+	ret = ft_write(fd, str, len);
+	printf("errno : %d\n", errno);
+	printf("ft_write ret = %d\n", ret);
+	ret = write(fd, str, len);
+	printf("errno : %d\n", errno);
+	printf("write ret = %d\n", ret);
 	close(fd);
 
 	fd = open("test.txt", O_RDONLY);
-	ft_read(fd, buf, 6);
-	printf("read = %s\n", buf);
+	ft_read(fd, buf1, len);
+	printf("ft_read = %s\n", buf1);
+	read(fd, buf2, len);
+	printf("read = %s\n", buf2);
 	close(fd);
-
-	fd = open("test.txt", O_RDONLY);
-	read(fd, buf, 6);
-	printf("read = %s\n", buf);
-	close(fd);
-
+	if (!strcmp(buf1, buf2))
+		printf("" GREEN "[OK] " RESET "");
+	else
+		printf("" RED "[KO] " RESET "");
 }
 
 int main(void)
@@ -336,9 +323,9 @@ int main(void)
 	printf("\n\n___________________________\n");
 	printf("............strcmp.........\n");
 	printf("___________________________\n");
-    strmcp_test(ft_strcmp("cc", ""), strcmp("cc", ""));
-    strmcp_test(ft_strcmp("non", "papa"), strcmp("non", "papa"));
-    strmcp_test(ft_strcmp("blabalabla&", "blabalabla&"), strcmp("blabalabla&", "blabalabla&"));
+    strmcp_test("cc", "");
+    strmcp_test("non", "papa");
+    strmcp_test("blabalabla&", "blabalabla&");
 
 
 	printf("\n\n___________________________\n");
@@ -355,7 +342,18 @@ felis sed purus. Mauris magna ex, mollis non suscipit eu, lacinia ac turpis. Pha
 ac tortor et lectus fermentum lobortis eu at mauris. Vestibulum sit amet posuere\
 tortor, sit amet consequat amet.");
 	
-
+	printf("\n\n___________________________\n");
+	printf("............strlen.........\n");
+	printf("___________________________\n");
+    strlen_test("coucou");
+	strlen_test("Lorem ipsum dolor sit amet, consectetur adipiscing\
+elit. Sed in malesuada purus. Etiam a scelerisque massa. Ut non euismod elit. Aliquam\
+bibendum dolor mi, id fringilla tellus pulvinar eu. Fusce vel fermentum sem. Cras\
+volutpat, eros eget rhoncus rhoncus, diam augue egestas dolor, vitae rutrum nisi\
+felis sed purus. Mauris magna ex, mollis non suscipit eu, lacinia ac turpis. Phasellus\
+ac tortor et lectus fermentum lobortis eu at mauris. Vestibulum sit amet posuere\
+tortor, sit amet consequat amet.");
+    strlen_test("");
 	
 
 	printf("\n\n___________________________\n");
@@ -372,36 +370,10 @@ felis sed purus. Mauris magna ex, mollis non suscipit eu, lacinia ac turpis. Pha
 ac tortor et lectus fermentum lobortis eu at mauris. Vestibulum sit amet posuere\
 tortor, sit amet consequat amet.");
 
-//change large string to one
 	printf("\n\n___________________________\n");
-	printf("............strlen.........\n");
+	printf(".......write/read..........\n");
 	printf("___________________________\n");
-    strlen_test(ft_strlen("coucou"), strlen("coucou"));
-	strlen_test(ft_strlen("Lorem ipsum dolor sit amet, consectetur adipiscing\
-elit. Sed in malesuada purus. Etiam a scelerisque massa. Ut non euismod elit. Aliquam\
-bibendum dolor mi, id fringilla tellus pulvinar eu. Fusce vel fermentum sem. Cras\
-volutpat, eros eget rhoncus rhoncus, diam augue egestas dolor, vitae rutrum nisi\
-felis sed purus. Mauris magna ex, mollis non suscipit eu, lacinia ac turpis. Phasellus\
-ac tortor et lectus fermentum lobortis eu at mauris. Vestibulum sit amet posuere\
-tortor, sit amet consequat amet."), strlen("Lorem ipsum dolor sit amet, consectetur adipiscing\
-elit. Sed in malesuada purus. Etiam a scelerisque massa. Ut non euismod elit. Aliquam\
-bibendum dolor mi, id fringilla tellus pulvinar eu. Fusce vel fermentum sem. Cras\
-volutpat, eros eget rhoncus rhoncus, diam augue egestas dolor, vitae rutrum nisi\
-felis sed purus. Mauris magna ex, mollis non suscipit eu, lacinia ac turpis. Phasellus\
-ac tortor et lectus fermentum lobortis eu at mauris. Vestibulum sit amet posuere\
-tortor, sit amet consequat amet."));
-
-    strlen_test(ft_strlen(""), strlen(""));
-
-	printf("\n\n___________________________\n");
-	printf("............write..........\n");
-	printf("___________________________\n");
-	write_test();
-
-	printf("\n\n___________________________\n");
-	printf("............read...........\n");
-	printf("___________________________\n");
-    read_test();
-	printf("\n\n");
+	WriteRead_test(NULL);
+	WriteRead_test("Lorm ipsum");
     return(0);
 }

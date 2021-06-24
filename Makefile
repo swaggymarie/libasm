@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mgavillo <mgavillo@student.42.fr>          +#+  +:+       +#+         #
+#    By: marie <marie@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/25 17:09:00 by mgavillo          #+#    #+#              #
-#    Updated: 2021/02/15 16:01:13 by mgavillo         ###   ########.fr        #
+#    Updated: 2021/06/24 13:41:46 by marie            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,6 @@ OBJ_BONUS = $(OBJ) $(patsubst %.s, ${OBJ_DIR}/%.o, ${SRC_BONUS})
 
 BIN = test
 TEST_FILE = test.txt
-#vpath %.s ./src
-#vpath %.h ./include
 
 .PHONY : all test bonus clean fclean re
 
@@ -63,8 +61,8 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.s $(HEADER)
 test : fclean bonus main.c $(NAME)
 	touch $(TEST_FILE)
 	$(CC) main.c $(CFLAGS) -o $(BIN) -lasm
+	clear
 	./$(BIN)
-	rm $(TEST_FILE)
 
 bonus : $(OBJ_BONUS)
 	ar rcs $(NAME) $^

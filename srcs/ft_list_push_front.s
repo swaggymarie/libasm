@@ -10,7 +10,7 @@ ft_list_push_front:
                     pop     rsi
                     pop     rdi  
                     cmp		rax, 0               
-			        jz		_end
+		    jz	    _end
                     mov     [rax], rsi
                     mov     r8, [rdi]
                     mov     [rax + 8], r8

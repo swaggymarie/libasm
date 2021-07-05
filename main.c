@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <errno.h>
-//rdi rsi rdx
-//supprimer retour fonction
-// tester avec void * partout
-// refaire tests propres
 
 void	delete_list(t_list **list)
 {
@@ -156,10 +152,10 @@ void	list_sort_test()
 	list_add_back(&list, list_new(strdup("blabla")));
 	list_add_back(&list, list_new(strdup("lol")));
 
+	tmp = list;
 	//print_string_list(list);
 	ft_list_sort(&list, strcmp);
 	//print_string_list(list);
-	tmp = list;
 	while(tmp->next)
 	{
 		if (strcmp(tmp->data, tmp->next->data) <= 0)

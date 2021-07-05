@@ -33,7 +33,7 @@ CFLAGS = -I $(INCLUDE) -L. -Wall -Wextra -Werror
 NASM = nasm
 NASMFLAGS = -f elf64 -I$(INCLUDE)
 
-INCLUDE = ./include
+INCLUDE = ./incs
 HEADER = $(INCLUDE)/libasm.h
 
 OBJ_DIR = ./objs
@@ -70,7 +70,7 @@ bonus : $(OBJ_BONUS)
 	@echo "$(NAME) with bonus has been created"
 
 clean :
-	rm -f $(OBJ_BONUS)
+	rm -f $(OBJ_BONUS) $(NAME) $(BIN) $(TEST_FILE)
 
 fclean : clean
 	rm -f $(NAME)

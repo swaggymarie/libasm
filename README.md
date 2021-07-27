@@ -1,5 +1,5 @@
 # libasm
-This school project's goal is to create a basic asm library. 
+This school project's goal is to create a basic asm library. This branch is made for **Mac** , if you're a Linux user, please checkout to the write branch.
 
 ## Table of Contents  
 [ft_strlen](#strlen) | [ft_strcpy](#strcpy) | [ft_strcmp](#strcmp) | [ft_write](#write) | [ft_read](#read) | [ft_strdup](#strdup)

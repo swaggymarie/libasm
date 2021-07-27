@@ -2,7 +2,7 @@
 This school project's goal is to create a basic asm library. 
 
 ## Table of Contents  
-[ft_strlen](#https://man.developpez.com/man3/strlen/)
+[ft_strlen](https://man.developpez.com/man3/strlen/)
 
 [ft_strcpy]
 ◦ft_strcmp (man 3 strcmp)

@@ -1,7 +1,14 @@
 # libasm
 This school project's goal is to create a basic asm library. 
 
-## Prenambule
-##### Table of Contents  
-[Headers](#headers)  
+## Table of Contents  
+[ft_strlen](#strlen)
+
+◦ft_strcpy (man 3 strcpy)
+◦ft_strcmp (man 3 strcmp)
+◦ft_write (man 2 write)
+◦ft_read (man 2 read)
+◦ft_strdup (](#headers)  
 [Emphasis](#emphasis) 
+
+## Prenambule

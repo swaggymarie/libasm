@@ -29,6 +29,8 @@ This school project's goal is to create a basic asm library.
 This code is made in 64 bits ASM with Intel syntax.
 
 ### Registers
+First six arguments are in rdi, rsi, rdx, rcx, r8d, r9d
+
 | Registers                                                           | Size                   |
 | ------------------------------------------------------------------- |:----------------------:|
 | rax , rbx , rcx , rdx , rdi , rsi , rbp, rsp , r8 , r9 , ... , r15  | 64 bits                |

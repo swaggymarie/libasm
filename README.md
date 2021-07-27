@@ -2,31 +2,13 @@
 This school project's goal is to create a basic asm library. 
 
 ## Table of Contents  
-[ft_strlen](#strlen)
-
-[ft_strcpy](#strcpy)
-
-[ft_strcmp](#strcmp)
-
-[ft_write](#write)
-
-[ft_read](#read)
-
-[ft_strdup](#strdup)
+[ft_strlen](#strlen) | [ft_strcpy](#strcpy) | [ft_strcmp](#strcmp) | [ft_write](#write) | [ft_read](#read) | [ft_strdup](#strdup)
 
 
-[ft_atoi_base](#atoi_base)
-
-[ft_list_push_front](#list_push_front)
-
-[ft_list_size](#list_size)
-
-[ft_list_sort](#list_sort)
-
-[ft_list_remove_if](#list_remove_if)
+[ft_atoi_base](#atoi_base) | [ft_list_push_front](#list_push_front) | [ft_list_size](#list_size) | [ft_list_sort](#list_sort) | [ft_list_remove_if](#list_remove_if)
 
 ## Prenambule
-This code is made in 64 bits ASM with Intel syntax.
+This code is made in 64 bits ASM with Intel syntax. Here is a quick reminder of things to know before jumping in the pool.
 
 ### Registers
 First six arguments are in rdi, rsi, rdx, rcx, r8d, r9d
